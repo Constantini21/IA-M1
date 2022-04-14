@@ -1,4 +1,5 @@
 import pygame as pg
+import sys
 
 WIDTH = HEIGHT = 512
 DIMENSION = 8
@@ -39,23 +40,31 @@ class Board():
             for e in pg.event.get():
                 if (e.type == pg.QUIT):
                     running = False
+
+            self.drawChessBoard(screen)
             clock.tick(MAX_FPS)
             pg.display.flip()
+        
+        sys.exit(1)
 
     def drawChessBoard(self, screen):
-        drawBoard(screen)
-        drawPieces(screen)
+        self.drawBoard(screen)
+        self.drawPieces(screen)
 
     def drawBoard(self, screen):
-        colors = [pg.Color('white'), pg.Color('gray')]
-        # for r in DIMENSION:
-        #     for c in DIMENSION
+        colors = [pg.Color('light gray'), pg.Color('dark gray')]
+        for r in range(DIMENSION):
+            for c in range(DIMENSION):
+                color = colors[((r+c) % 2)]
+                pg.draw.rect(screen, color, pg.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
     
-    def drawPieces(seld, screen, board):
-        pass
+    def drawPieces(self, screen):
+        for r in range(DIMENSION):
+            for c in range(DIMENSION):
+                piece = self.boardState[r][c]
 
-########################################################################################################################
-
+                if (piece != '--'):
+                    screen.blit(IMAGES[piece], pg.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 if (__name__ == '__main__'):
     Board().show()
