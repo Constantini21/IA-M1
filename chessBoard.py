@@ -1,49 +1,54 @@
-import pygame as pg
+import pygame
 import sys
 
-WIDTH = HEIGHT = 512
-DIMENSION = 8
-SQ_SIZE = HEIGHT // DIMENSION
 MAX_FPS = 15
 IMAGES = {}
 
-class Board():
-    def __init__(self):
-        self.boardState = [
-        ['--', 'queen', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--'],
-        ['--', '--', '--', '--', '--', '--', '--', '--']
-        ]
-
+class Board:
+    def __init__(self, dimension, width = 512, height = 512):
+        self.DIMENSION = dimension
+        self.WIDTH = width
+        self.HEIGHT = height
+        self.SQ_SIZE = height // dimension
         self.whiteToMove = True
-        self.moveLog = []
+        
+        self.loadImages()
+        self.resetBoard()
+
+    def resetBoard(self):
+        self.boardState = []
+
+        for i in range(self.DIMENSION):
+            for j in range(self.DIMENSION):
+                if (j == 0):
+                    self.boardState.append([])
+                    self.boardState[i].append(None)
+                else:
+                    self.boardState[i].append(None)
 
     def loadImages(self):
         pieces = ['queen']
         for piece in pieces:
-            IMAGES[piece] = pg.transform.scale(pg.image.load('images/' + piece + '.png'), (SQ_SIZE, SQ_SIZE))
+            IMAGES[piece] = pygame.transform.scale(pygame.image.load('images/' + piece + '.png'), (self.SQ_SIZE, self.SQ_SIZE))
 
     def show(self):
-        pg.init()
-        screen = pg.display.set_mode((WIDTH, HEIGHT))
-        clock = pg.time.Clock()
-        screen.fill(pg.Color('white'))
-        self.loadImages()
+        pygame.init()
+        pygame.display.set_caption('N Rainhas')
+        pygame.display.set_icon(pygame.image.load('images/queen.png'))
+        
+        screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        clock = pygame.time.Clock()
+        screen.fill(pygame.Color('white'))
         running = True
 
         while running:
-            for e in pg.event.get():
-                if (e.type == pg.QUIT):
+            for e in pygame.event.get():
+                if (e.type == pygame.QUIT):
                     running = False
 
             self.drawChessBoard(screen)
             clock.tick(MAX_FPS)
-            pg.display.flip()
+            pygame.display.flip()
         
         sys.exit(1)
 
@@ -52,19 +57,19 @@ class Board():
         self.drawPieces(screen)
 
     def drawBoard(self, screen):
-        colors = [pg.Color('light gray'), pg.Color('dark gray')]
-        for r in range(DIMENSION):
-            for c in range(DIMENSION):
+        colors = [pygame.Color('light gray'), pygame.Color('dark gray')]
+        for r in range(self.DIMENSION):
+            for c in range(self.DIMENSION):
                 color = colors[((r+c) % 2)]
-                pg.draw.rect(screen, color, pg.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+                pygame.draw.rect(screen, color, pygame.Rect(c * self.SQ_SIZE, r * self.SQ_SIZE, self.SQ_SIZE, self.SQ_SIZE))
     
     def drawPieces(self, screen):
-        for r in range(DIMENSION):
-            for c in range(DIMENSION):
+        for r in range(self.DIMENSION):
+            for c in range(self.DIMENSION):
                 piece = self.boardState[r][c]
 
-                if (piece != '--'):
-                    screen.blit(IMAGES[piece], pg.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
+                if (piece != None):
+                    screen.blit(IMAGES[piece], pygame.Rect(c * self.SQ_SIZE, r * self.SQ_SIZE, self.SQ_SIZE, self.SQ_SIZE))
 
 if (__name__ == '__main__'):
     Board().show()

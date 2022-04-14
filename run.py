@@ -6,7 +6,7 @@ if __name__ == '__main__':
 	# certifique-se de que um número de rainhas para colocar no tabuleiro foi passado
 	if len(sys.argv) < 2:
 		print('Este programa requer um número de rainhas para colocar como argumento.')
-		print('Exemplo: python run.py 8 r')
+		print('Exemplo: python run.py 8')
 		sys.exit(1)
 	
 	try:

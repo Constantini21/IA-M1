@@ -1,4 +1,5 @@
 from random import randint, choice
+from chessBoard import Board
 
 class HillClimbingRandom:
 	MAX_SIDE_STEPS = 30 # número máximo de ciclos pelos quais o solver passará onde o valor heurístico não diminui
@@ -6,6 +7,7 @@ class HillClimbingRandom:
 	def __init__(self, num_queens):
 		self.num_queens = num_queens
 		self.set_new_board()
+		self.chessBoard = Board(num_queens)		
 	
 	def set_new_board(self):
 		"""Configura um novo tabuleiro e redefine todas as variáveis ​​relevantes."""
@@ -16,17 +18,22 @@ class HillClimbingRandom:
 	
 	def print_board(self, board):
 		"""Imprime uma representação visual do tabuleiro."""
+		self.chessBoard.resetBoard()
 
-		for i in range(len(board)):
+		for i in range(len(board)):			
 			for j in range(len(board)):
 				if (len(board) - i) - 1 - board[j] == 0:
+					self.chessBoard.boardState[i][j] = 'queen'
 					print('[Q]', end='')
 				else:
 					print('[ ]', end='')
+					self.chessBoard.boardState[i][j] = None
 				
 				if (j == (len(board) - 1)):
 					print('')
 			print
+
+		self.chessBoard.show()
 	
 	def get_num_attacks(self, board):
 		"""Retorna o número total de pares de rainhas que podem se atacar no tabuleiro."""
