@@ -8,5 +8,5 @@ HillClimbingRandom: Modifica um único tabuleiro até que sua função heurísti
 
 ### Execultar programa
 ```bash
-python run.py 8
+python main.py 8
 ```

@@ -70,6 +70,3 @@ class Board:
 
                 if (piece != None):
                     screen.blit(IMAGES[piece], pygame.Rect(c * self.SQ_SIZE, r * self.SQ_SIZE, self.SQ_SIZE, self.SQ_SIZE))
-
-if (__name__ == '__main__'):
-    Board().show()
